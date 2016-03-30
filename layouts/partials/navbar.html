@@ -1,0 +1,20 @@
+<header>
+	<nav>
+		<ul class="main">
+			<li><a href="https://blog.soulshake.net">{{ .Site.Title }}</a></li>
+		</ul>
+		<ul class="social">
+			{{ if .RSSlink }}
+			<li>
+				<a href="{{ .RSSlink }}" class="fa fa-rss" target="_blank"></a>
+			</li>
+			{{ end }}
+			<li>
+				<a class="fa fa-github" href="https://github.com/soulshake" target="_blank"></a>
+			</li>
+			<li>
+				<a class="fa fa-twitter" href="https://twitter.com/s0ulshake" target="_blank"></a>
+			</li>
+		</ul>
+	</nav>
+</header>

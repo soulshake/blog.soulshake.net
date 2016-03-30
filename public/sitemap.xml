@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://blog.soulshake.net/</loc>
+    <lastmod>2016-03-30T15:00:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.soulshake.net/post/i3-new-terminals-in-pwd/</loc>
+    <lastmod>2016-03-30T15:00:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.soulshake.net/post/hello-world/</loc>
+    <lastmod>2016-01-30T23:34:00-07:00</lastmod>
+  </url>
+  
+</urlset>
