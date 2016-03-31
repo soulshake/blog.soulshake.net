@@ -8,3 +8,7 @@ title = "a flash of light and a distant boom."
     Author = "AJ Bowen"
     disqusShortname = "blogsoulshakenet"
 
+[taxonomies]
+tag = "tags"
+category = "categories"
+series = "series"

@@ -1,56 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on a flash of light and a distant boom.</title>
-    <link>http://blog.soulshake.net/post/</link>
-    <description>Recent content in Posts on a flash of light and a distant boom.</description>
+    <title>Debian on a flash of light and a distant boom.</title>
+    <link>http://blog.soulshake.net/tags/debian/</link>
+    <description>Recent content in Debian on a flash of light and a distant boom.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Mar 2016 15:00:00 -0700</lastBuildDate>
-    <atom:link href="http://blog.soulshake.net/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>Opening new i3 terminals in the same working directory</title>
-      <link>http://blog.soulshake.net/post/i3-new-terminals-in-pwd/</link>
-      <pubDate>Wed, 30 Mar 2016 15:00:00 -0700</pubDate>
-      
-      <guid>http://blog.soulshake.net/post/i3-new-terminals-in-pwd/</guid>
-      <description>
-
-&lt;p&gt;I love i3, and often have multiple split panes open when working on a project. I was tired of opening a new pane and having to &lt;code&gt;cd&lt;/code&gt; to the directory I was in.&lt;/p&gt;
-
-&lt;p&gt;I came across a lot of proposed solutions, but they were all too complicated or didn&amp;rsquo;t work. Here&amp;rsquo;s my hack.&lt;/p&gt;
-
-&lt;p&gt;Note: I use roxterm. I doubt this will work with other terms.&lt;/p&gt;
-
-&lt;h3 id=&#34;use-bash-s-prompt-command-to-keep-track-of-your-current-directory:e08811b517b85d95e690a741cc9cad57&#34;&gt;Use bash&amp;rsquo;s &lt;code&gt;PROMPT_COMMAND&lt;/code&gt; to keep track of your current directory&lt;/h3&gt;
-
-&lt;p&gt;This will update &lt;code&gt;/tmp/whereami&lt;/code&gt; every time you hit enter in a shell.&lt;/p&gt;
-
-&lt;p&gt;In my &lt;code&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;export PROMPT_COMMAND=&amp;quot;pwd &amp;gt; /tmp/whereami&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;create-a-tiny-shell-script:e08811b517b85d95e690a741cc9cad57&#34;&gt;Create a tiny shell script&lt;/h3&gt;
-
-&lt;p&gt;This just opens a new terminal (i3-sensible-terminal evaluates to $TERMINAL which evaluates to &lt;code&gt;urxvt&lt;/code&gt; in my case) in the directory located in &lt;code&gt;/tmp/whereami&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;In &lt;code&gt;$HOME/.i3/i3_shell.sh&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-WHEREAMI=$(cat /tmp/whereami)
-i3-sensible-terminal --directory=&amp;quot;$WHEREAMI&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;i3-bindsym-to-open-a-new-term:e08811b517b85d95e690a741cc9cad57&#34;&gt;i3 bindsym to open a new term&lt;/h3&gt;
-
-&lt;p&gt;In my &lt;code&gt;~/.i3/config&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bindsym $mod+Return exec $HOME/.i3/i3_shell.sh
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
+    <lastBuildDate>Tue, 01 Mar 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://blog.soulshake.net/tags/debian/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Weird zooming after changing tabs in Chromium on Debian with i3</title>
@@ -105,16 +62,6 @@ CoastingFriction        = 255
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Ahh, much better.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hello world</title>
-      <link>http://blog.soulshake.net/post/hello-world/</link>
-      <pubDate>Sat, 30 Jan 2016 23:34:00 -0700</pubDate>
-      
-      <guid>http://blog.soulshake.net/post/hello-world/</guid>
-      <description>&lt;p&gt;Greetings, earthlings!&lt;/p&gt;
 </description>
     </item>
     
