@@ -24,8 +24,19 @@ RUN curl -sSL https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/h
 #RUN mkdir -p /usr/src/blog/themes
 #WORKDIR /usr/src/blog/themes
 #RUN git clone https://github.com/yoshiharuyamashita/blackburn.git
+ENV HOME /home/hugo
+RUN useradd --create-home --home-dir $HOME hugo \
+    && chown -R hugo:hugo $HOME
+
 COPY . /usr/src/blog
 WORKDIR /usr/src/blog
+# make sure files are owned by hugo user
+RUN chown -R hugo:hugo /usr/src/blog
+EXPOSE 80
+EXPOSE 1313
 #RUN hugo -t blackburn
 
-ENTRYPOINT [ "/usr/src/blog/release.sh" ]
+USER hugo
+
+
+ENTRYPOINT [ "hugo", "-v", "serve" ]
