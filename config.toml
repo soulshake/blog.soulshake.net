@@ -1,7 +1,7 @@
 baseUrl = "http://blog.soulshake.net/"
 CanonifyUrls = true
 languageCode = "en-us"
-title = "a flash of light and a distant boom."
+title = "a flash of light and a distant boom"
 
 [params]
 	description = "There be mraagons"
@@ -12,3 +12,11 @@ title = "a flash of light and a distant boom."
 tag = "tags"
 category = "categories"
 series = "series"
+
+[permalinks]
+    post = "/:year/:month/:filename/"
+    code = "/:filename/"
+
+[indexes]
+  tag = "tags"
+  topic = "topics"
