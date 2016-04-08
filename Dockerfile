@@ -39,4 +39,4 @@ EXPOSE 1313
 USER hugo
 
 
-ENTRYPOINT [ "hugo", "-v", "serve" ]
+ENTRYPOINT [ "hugo", "-v", "serve", "--bind=0.0.0.0" ]
