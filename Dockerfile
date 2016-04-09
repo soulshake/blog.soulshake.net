@@ -33,10 +33,10 @@ COPY . /usr/src/blog
 WORKDIR /usr/src/blog
 # make sure files are owned by hugo user
 RUN chown -R hugo:hugo /usr/src/blog
-EXPOSE 80
+#EXPOSE 80
 EXPOSE 1313
 
 USER hugo
 
 RUN hugo
-ENTRYPOINT [ "hugo", "-v", "serve", "--bind=0.0.0.0" ]
+CMD [ "hugo", "-v", "serve", "--bind=0.0.0.0" ]
