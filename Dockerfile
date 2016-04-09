@@ -25,6 +25,7 @@ RUN curl -sSL https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/h
 #WORKDIR /usr/src/blog/themes
 #RUN git clone https://github.com/yoshiharuyamashita/blackburn.git
 ENV HOME /home/hugo
+ENV VIRTUAL_HOST "blog.soulshake.net, *.blog.soulshake.net"
 RUN useradd --create-home --home-dir $HOME hugo \
     && chown -R hugo:hugo $HOME
 
@@ -34,9 +35,8 @@ WORKDIR /usr/src/blog
 RUN chown -R hugo:hugo /usr/src/blog
 EXPOSE 80
 EXPOSE 1313
-#RUN hugo -t blackburn
 
 USER hugo
 
-
+RUN hugo
 ENTRYPOINT [ "hugo", "-v", "serve", "--bind=0.0.0.0" ]

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Debian on a flash of light and a distant boom.</title>
+    <title>Debian on a flash of light and a distant boom</title>
     <link>http://blog.soulshake.net/tags/debian/</link>
-    <description>Recent content in Debian on a flash of light and a distant boom.</description>
+    <description>Recent content in Debian on a flash of light and a distant boom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Mar 2016 00:00:00 +0000</lastBuildDate>
@@ -11,10 +11,10 @@
     
     <item>
       <title>Weird zooming after changing tabs in Chromium on Debian with i3</title>
-      <link>http://blog.soulshake.net/post/scroll-rage/</link>
+      <link>http://blog.soulshake.net/2016/03/scroll-rage/</link>
       <pubDate>Tue, 01 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.soulshake.net/post/scroll-rage/</guid>
+      <guid>http://blog.soulshake.net/2016/03/scroll-rage/</guid>
       <description>
 
 &lt;p&gt;Shortly after switching from OSX, I noticed that I would get unexpected (and extremely annoying) zooming after changing tabs in Chrome.&lt;/p&gt;

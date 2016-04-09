@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech on a flash of light and a distant boom</title>
+    <link>http://blog.soulshake.net/categories/tech/</link>
+    <description>Recent content in Tech on a flash of light and a distant boom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Mar 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://blog.soulshake.net/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Giant list of tech conferences</title>
+      <link>http://blog.soulshake.net/post/tech-events-list/</link>
+      <pubDate>Thu, 31 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.soulshake.net/post/tech-events-list/</guid>
+      <description>&lt;p&gt;I made a &lt;a href=&#34;https://docs.google.com/spreadsheets/d/10wk1anLdDajRarjQ6mR6ZIK_SXCfDPfNigwUvGp33u0/edit#gid=61725440&#34;&gt;big list of tech conferences&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

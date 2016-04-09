@@ -2,6 +2,8 @@ baseUrl = "http://blog.soulshake.net/"
 CanonifyUrls = true
 languageCode = "en-us"
 title = "a flash of light and a distant boom"
+builddrafts = true
+buildfuture = true
 
 [params]
 	description = "There be mraagons"

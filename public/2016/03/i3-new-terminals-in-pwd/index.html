@@ -7,11 +7,11 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Test post with Hugo.">
+	<meta name="description" content="My simple solution.">
 
-	<title>a flash of light and a distant boom: Hello world</title>
+	<title>a flash of light and a distant boom: Opening new i3 terminals in the same working directory</title>
 
-	<link rel="canonical" href="http://blog.soulshake.net/post/hello-world/">
+	<link rel="canonical" href="http://blog.soulshake.net/2016/03/i3-new-terminals-in-pwd/">
 	
 
 	
@@ -19,21 +19,21 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@s0ulshake">
 <meta name="twitter:creator" content="@s0ulshake">
-<meta name="twitter:title" content="a flash of light and a distant boom: Hello world">
-<meta name="twitter:description" content="Test post with Hugo.">
+<meta name="twitter:title" content="a flash of light and a distant boom: Opening new i3 terminals in the same working directory">
+<meta name="twitter:description" content="My simple solution.">
 <meta name="twitter:image:src" content="/img/share.png">
 <meta name="twitter:image:width" content="500">
 <meta name="twitter:image:height" content="500">
 <meta name="twitter:domain" content="blog.soulshake.net">
 
 
-<meta property="og:title" content="Hello world"/>
+<meta property="og:title" content="Opening new i3 terminals in the same working directory"/>
 <meta property="og:Section" content="website"/>
-<meta property="og:url" content="http://blog.soulshake.net/post/hello-world/"/>
+<meta property="og:url" content="http://blog.soulshake.net/2016/03/i3-new-terminals-in-pwd/"/>
 <meta property="og:image" content="/img/share.png"/>
 <meta property="og:site_name" content="a flash of light and a distant boom"/>
 <meta property="fb:admins" content="1018260045"/>
-<meta property="og:description" content="Test post with Hugo."/>
+<meta property="og:description" content="My simple solution."/>
 
 
 	<link rel="shortcut icon" href="http://blog.soulshake.net/favicon.ico">
@@ -64,9 +64,42 @@
 
 <div class="container single">
 	<article>
-		<h2>Hello world</h2>
-		<div class="time">Saturday, January 30, 2016</div>
-		<p>Greetings, earthlings!</p>
+		<h2>Opening new i3 terminals in the same working directory</h2>
+		<div class="time">Wednesday, March 30, 2016</div>
+		
+
+<p>I love i3, and often have multiple split panes open when working on a project. I was tired of opening a new pane and having to <code>cd</code> to the directory I was in.</p>
+
+<p>I came across a lot of proposed solutions, but they were all too complicated or didn&rsquo;t work. Here&rsquo;s my hack.</p>
+
+<p>Note: I use roxterm. I doubt this will work with other terms.</p>
+
+<h3 id="use-bash-s-prompt-command-to-keep-track-of-your-current-directory:e08811b517b85d95e690a741cc9cad57">Use bash&rsquo;s <code>PROMPT_COMMAND</code> to keep track of your current directory</h3>
+
+<p>This will update <code>/tmp/whereami</code> every time you hit enter in a shell.</p>
+
+<p>In my <code>~/.bash_profile</code>:</p>
+
+<pre><code>export PROMPT_COMMAND=&quot;pwd &gt; /tmp/whereami&quot;
+</code></pre>
+
+<h3 id="create-a-tiny-shell-script:e08811b517b85d95e690a741cc9cad57">Create a tiny shell script</h3>
+
+<p>This just opens a new terminal (i3-sensible-terminal evaluates to $TERMINAL which evaluates to <code>urxvt</code> in my case) in the directory located in <code>/tmp/whereami</code>.</p>
+
+<p>In <code>$HOME/.i3/i3_shell.sh</code>:</p>
+
+<pre><code>#!/bin/bash
+WHEREAMI=$(cat /tmp/whereami)
+i3-sensible-terminal --directory=&quot;$WHEREAMI&quot;
+</code></pre>
+
+<h3 id="i3-bindsym-to-open-a-new-term:e08811b517b85d95e690a741cc9cad57">i3 bindsym to open a new term</h3>
+
+<p>In my <code>~/.i3/config</code>:</p>
+
+<pre><code>bindsym $mod+Return exec $HOME/.i3/i3_shell.sh
+</code></pre>
 
 	</article>
 </div>
