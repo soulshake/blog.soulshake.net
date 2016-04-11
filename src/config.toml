@@ -10,6 +10,14 @@ theme = "blackburn"
 	description = "There be mraagons"
     Author = "AJ Bowen"
     disqusShortname = "blogsoulshakenet"
+    disqus = "blogsoulshakenet"
+    subtitle = "Ohai I'm a subtitle"
+    brand = "Blackburn"
+    #googleAnalytics = "Your Google Analytics tracking ID"
+    # CSS name for highlight.js
+    #highlightjs = "androidstudio"
+    # dateFormat = "02 Jan 2006, 15:04"
+
 
 [taxonomies]
 tag = "tags"
@@ -49,3 +57,10 @@ series = "series"
     pre = "<i class='fa fa-phone fa-fw'></i>"
     weight = 3
     url = "/contact/"
+
+[social]
+  # Link your social networking accouns to the side menu
+  # by entering your username or ID.
+
+  # SNS microblogging
+  twitter = "@s0ulshake"
