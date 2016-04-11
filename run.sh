@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 #HUGO_THEME
 
@@ -10,8 +10,6 @@
 
 HUGO_BASEURL="${HUGO_BLOG_URL:=blog.soulshake.net}"
 
-VIRTUAL_HOST="${HUGO_BLOG_URL:=blog.soulshake.net}"
-
 WATCH="${HUGO_WATCH:=false}"
 SLEEP="${HUGO_REFRESH_TIME:=-1}"
 echo "HUGO_WATCH:" $WATCH
@@ -21,7 +19,7 @@ echo "HUGO_BASEURL:" $HUGO_BASEURL
 
 HUGO=/usr/bin/hugo
 
-while [ true ]
+while true
 do
     if [[ $HUGO_WATCH != 'false' ]]; then
         echo "Watching..."

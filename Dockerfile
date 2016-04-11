@@ -13,11 +13,10 @@ RUN apk add --update wget ca-certificates && \
 
 COPY ./run.sh /run.sh
 
-#VOLUME /src
-VOLUME /output
-
 COPY ./src /src
-WORKDIR /src
+
+ENV HUGO_BASEURL=blog.soulshake.net
+ENV HUGO_REFRESH_TIME=3600
 CMD ["/run.sh"]
 
 EXPOSE 1313
