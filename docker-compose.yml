@@ -1,12 +1,13 @@
 hugo:
-  image: soulshake/hugo:latest
+  image: soulshake/blog.soulshake.net:latest
+  #image: soulshake/hugo:latest
   volumes:
     - ./src/:/src
     - ./output/:/output
   environment:
     - HUGO_REFRESH_TIME=3600
     #- HUGO_THEME=mytheme
-    - HUGO_BASEURL=mydomain.com
+    - HUGO_BASEURL=blog.soulshake.net
   restart: always
 
 web:
@@ -17,4 +18,14 @@ web:
     - VIRTUAL_HOST=blog.soulshake.net
   ports:
     - 80
+  restart: always
+
+proxy:
+  image: jwilder/nginx-proxy
+  ports:
+    - 80:80
+    - 443:443
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+    - vhost.d:/etc/nginx/vhost.d:ro
   restart: always

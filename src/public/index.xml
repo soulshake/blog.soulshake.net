@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>a flash of light and a distant boom</title>
+    <link>http://blog.soulshake.net/</link>
+    <description>Recent content on a flash of light and a distant boom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Apr 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://blog.soulshake.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Serving your resume over curl like a badass: Running a wopr server on an EC2 instance with Docker</title>
+      <link>http://blog.soulshake.net/2016/04/command-line-resume/</link>
+      <pubDate>Sun, 03 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/04/command-line-resume/</guid>
+      <description>
+
+&lt;h2 id=&#34;requirements:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Requirements&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Docker (&lt;a href=&#34;https://docs.docker.com/engine/installation/&#34;&gt;how to install&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Docker Machine (&lt;a href=&#34;https://docs.docker.com/machine/install-machine/&#34;&gt;how to install&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;the AWS CLI (&lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/userguide/installing.html&#34;&gt;how to install&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;An AWS account&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;optional:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Optional&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A domain name&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;how-to:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;How to&lt;/h2&gt;
+
+&lt;p&gt;Clone this repo:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone https://github.com/soulshake/cv.soulshake.net.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Export AWS environment variables:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;export AWS_SECRET_ACCESS_KEY=your-key-here
+export AWS_ACCESS_KEY_ID=your-key-id-here
+export AWS_DEFAULT_REGION=your-aws-region-here
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By default, &lt;code&gt;machine&lt;/code&gt; creates new instances in region &lt;code&gt;us-east-1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;use-docker-machine-to-create-a-host-ec2-instance:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Use docker-machine to create a host EC2 instance&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker-machine create --driver amazonec2 aws-sandbox
+
+$ eval $(docker-machine env aws-sandbox)
+
+$ docker build -t soulshake/cv.soulshake.net .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;create-a-cname:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;create a CNAME&lt;/h3&gt;
+
+&lt;h4 id=&#34;get-your-ec2-instance-public-dns-name:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Get your EC2 instance public DNS name&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;aws ec2 describe-instances \
+    --query  &amp;quot;Reservations[*].Instances[*].[{CNAME:PublicDnsName,SecurityGroups:SecurityGroups}]&amp;quot; \
+    --output table
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;and-create-a-cname-record-with-your-domain-provider:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;And create a CNAME record with your domain provider&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;gandi record create \
+    --name cv \
+    --type CNAME \
+    --value ec2-52-58-37-111.eu-central-1.compute.amazonaws.com. \
+    soulshake.net
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-docker-machine-to-security-group:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;add docker-machine to security group&lt;/h2&gt;
+
+&lt;p&gt;You have two ways to do this:&lt;/p&gt;
+
+&lt;h3 id=&#34;on-the-command-line:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;On the command line&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;aws ec2 describe-security-groups \
+    --filters &amp;quot;Name=group-name,Values=docker-machine&amp;quot; \
+    --output table
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;on-the-web-interface:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;On the web interface&lt;/h3&gt;
+
+&lt;p&gt;Log into the &lt;a href=&#34;https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#Instances:sort=publicIp&#34;&gt;EC2 console&lt;/a&gt; (make sure to select your region at the top right), then:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- By &amp;quot;Security groups&amp;quot; click the &amp;quot;docker-machine&amp;quot; link
+- When the security group is selected, select the &amp;quot;Inbound&amp;quot; tab at the bottom
+- Click the &amp;quot;Edit&amp;quot; button
+- Click &amp;quot;Add Rule&amp;quot; --&amp;gt; All traffic --&amp;gt; All [protocol] --&amp;gt; Source: Anywhere 0.0.0.0/0 --&amp;gt; Save
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;run-the-container:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Run the container&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run -d -ti \
+    --name cv.soulshake.net \
+    --publish-all \
+    -p 80:1337 \
+    -p 1337:1337  \
+    soulshake/cv.soulshake.net
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;behold-the-magic:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Behold the magic!&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;curl -N cv.soulshake.net:32769/\[0-2\]\?auto\&amp;amp;cols=$((COLUMNS))&amp;amp;rows=$((LINES))&amp;amp;terminal=${TERM}
+
+curl -N cv.soulshake.net:32769/\[0-2\]\?cols=$((COLUMNS))&amp;amp;rows=$((ROWS))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;automated-building:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Automated building&lt;/h1&gt;
+
+&lt;p&gt;If you want to take it to the next level, you can set up hooks.&lt;/p&gt;
+
+&lt;h2 id=&#34;automated-docker-hub-builds:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Automated Docker hub builds&lt;/h2&gt;
+
+&lt;p&gt;Log into your &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker Hub&lt;/a&gt; account and create a new Automated Build that will be triggered every time you push to your GitHub or BitBucket repo.&lt;/p&gt;
+
+&lt;h2 id=&#34;automated-deployment-of-the-newly-built-container-on-your-ec2-instance:6bc6e46e56683b9c46ddae56b95e1d9f&#34;&gt;Automated deployment of the newly built container on your EC2 instance&lt;/h2&gt;
+
+&lt;p&gt;Then, using &lt;a href=&#34;https://github.com/ehazlett/conduit&#34;&gt;conduit&lt;/a&gt;, you can set up your EC2 instance so the build triggers a new container to push your changes to production.&lt;/p&gt;
+
+&lt;p&gt;That command will look something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run -d \
+    --name conduit \
+    -p 8080:8080 \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    ehazlett/conduit \
+    -r soulshake/cv.soulshake.net \
+    -t YOUR_TOKEN_HERE
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Giant list of tech conferences</title>
+      <link>http://blog.soulshake.net/2016/03/tech-conferences-list/</link>
+      <pubDate>Thu, 31 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/03/tech-conferences-list/</guid>
+      <description>&lt;p&gt;I made a &lt;a href=&#34;https://docs.google.com/spreadsheets/d/10wk1anLdDajRarjQ6mR6ZIK_SXCfDPfNigwUvGp33u0/edit#gid=61725440&#34;&gt;big list of tech conferences&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Opening new i3 terminals in the same working directory</title>
+      <link>http://blog.soulshake.net/2016/03/i3-new-terminals-in-pwd/</link>
+      <pubDate>Wed, 30 Mar 2016 15:00:00 -0700</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/03/i3-new-terminals-in-pwd/</guid>
+      <description>
+
+&lt;p&gt;I love i3, and often have multiple split panes open when working on a project. I was tired of opening a new pane and having to &lt;code&gt;cd&lt;/code&gt; to the directory I was in.&lt;/p&gt;
+
+&lt;p&gt;I came across a lot of proposed solutions, but they were all too complicated or didn&amp;rsquo;t work. Here&amp;rsquo;s my hack.&lt;/p&gt;
+
+&lt;p&gt;Note: I use roxterm. I doubt this will work with other terms.&lt;/p&gt;
+
+&lt;h3 id=&#34;use-bash-s-prompt-command-to-keep-track-of-your-current-directory:e08811b517b85d95e690a741cc9cad57&#34;&gt;Use bash&amp;rsquo;s &lt;code&gt;PROMPT_COMMAND&lt;/code&gt; to keep track of your current directory&lt;/h3&gt;
+
+&lt;p&gt;This will update &lt;code&gt;/tmp/whereami&lt;/code&gt; every time you hit enter in a shell.&lt;/p&gt;
+
+&lt;p&gt;In my &lt;code&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export PROMPT_COMMAND=&amp;quot;pwd &amp;gt; /tmp/whereami&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;create-a-tiny-shell-script:e08811b517b85d95e690a741cc9cad57&#34;&gt;Create a tiny shell script&lt;/h3&gt;
+
+&lt;p&gt;This just opens a new terminal (i3-sensible-terminal evaluates to $TERMINAL which evaluates to &lt;code&gt;urxvt&lt;/code&gt; in my case) in the directory located in &lt;code&gt;/tmp/whereami&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;$HOME/.i3/i3_shell.sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+WHEREAMI=$(cat /tmp/whereami)
+i3-sensible-terminal --directory=&amp;quot;$WHEREAMI&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;i3-bindsym-to-open-a-new-term:e08811b517b85d95e690a741cc9cad57&#34;&gt;i3 bindsym to open a new term&lt;/h3&gt;
+
+&lt;p&gt;In my &lt;code&gt;~/.i3/config&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bindsym $mod+Return exec $HOME/.i3/i3_shell.sh
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Weird zooming after changing tabs in Chromium on Debian with i3</title>
+      <link>http://blog.soulshake.net/2016/03/scroll-rage/</link>
+      <pubDate>Tue, 01 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/03/scroll-rage/</guid>
+      <description>
+
+&lt;p&gt;Shortly after switching from OSX, I noticed that I would get unexpected (and extremely annoying) zooming after changing tabs in Chrome.&lt;/p&gt;
+
+&lt;p&gt;After a while, it became apparent that it only happened when I had scrolled up or down just before changing tabs with Ctrl Up/Down.&lt;/p&gt;
+
+&lt;p&gt;In other words, the steps to reproduce were:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;scroll a bit in tab A (the faster the scroll, the longer the coast)&lt;/li&gt;
+&lt;li&gt;while tab A is still coasting, change tabs to tab B&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The result is if you had pressed &lt;code&gt;ctrl+=&lt;/code&gt; or &lt;code&gt;ctrl+-&lt;/code&gt; a bunch of times.&lt;/p&gt;
+
+&lt;p&gt;After fooling around with &lt;code&gt;xinput&lt;/code&gt;, &lt;code&gt;xev&lt;/code&gt;, &lt;code&gt;xserver-xorg-input-synaptics&lt;/code&gt;, &lt;code&gt;xorg.conf&lt;/code&gt;, etc, I realized the scrolling/coasting action was being interpreted as keypresses even after changing contexts.&lt;/p&gt;
+
+&lt;p&gt;The solution:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install xserver-xorg-input-synaptics
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This package provides &lt;code&gt;synclient&lt;/code&gt;, a commandline utility to query and modify Synaptics driver options.&lt;/p&gt;
+
+&lt;p&gt;The culprit was the default settings for the Synaptics touchpad:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ synclient -l | grep -i coast
+CornerCoasting          = 0
+CoastingSpeed           = 20
+CoastingFriction        = 50
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I played with the settings until I found a combination that allowed a reasonable amount of coasting.&lt;/p&gt;
+
+&lt;p&gt;Changing CoastingSpeed to 0 disabled the smooth scrolling effect-thing completely. Any value higher than 0, and the behavior was still present.&lt;/p&gt;
+
+&lt;p&gt;Increasing &lt;code&gt;CoastingFriction&lt;/code&gt; to 255 slowed down the scrolling effect enough so that the coasting would stop before I could change tabs.&lt;/p&gt;
+
+&lt;h2 id=&#34;tl-dr:93c9f1c2744e6c23bcf7cbb7379abb5b&#34;&gt;TL;DR&lt;/h2&gt;
+
+&lt;p&gt;Install &lt;code&gt;xserver-xorg-input-synaptics&lt;/code&gt; and add the following lines to your profile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CoastingSpeed           = 10
+CoastingFriction        = 255
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ahh, much better.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>My photo scanning holy grail</title>
+      <link>http://blog.soulshake.net/2016/02/the-holy-grail-of-photo-scanning/</link>
+      <pubDate>Tue, 09 Feb 2016 23:34:00 -0700</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/02/the-holy-grail-of-photo-scanning/</guid>
+      <description>&lt;p&gt;I, too, dream of finding the grail. My ideal physical scanner would:
+- be a duplex photo scanner&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.scanyourentirelife.com/how-long-quickly-scan-entire-photo-collection/&#34;&gt;http://www.scanyourentirelife.com/how-long-quickly-scan-entire-photo-collection/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hello world</title>
+      <link>http://blog.soulshake.net/2016/01/hello-world/</link>
+      <pubDate>Sat, 30 Jan 2016 23:34:00 -0700</pubDate>
+      
+      <guid>http://blog.soulshake.net/2016/01/hello-world/</guid>
+      <description>&lt;p&gt;Greetings, earthlings!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
