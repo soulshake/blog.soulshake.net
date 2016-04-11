@@ -5,3 +5,5 @@ hugo:
     - ./src/:/src
     - ./output/:/output
   restart: always
+  ports:
+    - '1313'
