@@ -1,0 +1,8 @@
+hugo:
+  image: 'soulshake/blog.soulshake.net:latest'
+  ports:
+    - '1313'
+  #deployment_strategy: high_availability
+  #restart: always
+  #volumes:
+  #  - '/tmp/output:/output'
