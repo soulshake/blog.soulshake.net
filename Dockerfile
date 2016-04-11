@@ -17,6 +17,7 @@ COPY ./src /src
 
 ENV HUGO_BASEURL=blog.soulshake.net
 ENV HUGO_REFRESH_TIME=3600
+ENV HUGO_THEME=blackburn
 
 EXPOSE 1313
 CMD ["/run.sh"]
