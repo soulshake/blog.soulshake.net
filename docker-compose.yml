@@ -1,0 +1,20 @@
+hugo:
+  image: soulshake/hugo:latest
+  volumes:
+    - ./src/:/src
+    - ./output/:/output
+  environment:
+    - HUGO_REFRESH_TIME=3600
+    #- HUGO_THEME=mytheme
+    - HUGO_BASEURL=mydomain.com
+  restart: always
+
+web:
+  image: jojomi/nginx-static
+  volumes:
+    - ./output:/var/www
+  environment:
+    - VIRTUAL_HOST=blog.soulshake.net
+  ports:
+    - 80
+  restart: always
