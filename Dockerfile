@@ -13,7 +13,7 @@ RUN apk add --update wget ca-certificates && \
 
 COPY ./run.sh /run.sh
 
-VOLUME /src
+#VOLUME /src
 VOLUME /output
 
 COPY ./src /src
