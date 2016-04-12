@@ -13,9 +13,21 @@ RUN apk add --update wget ca-certificates && \
 
 COPY ./src /src
 WORKDIR /src
+EXPOSE 80
+
+# delete old public files
+RUN rm -rf /src/public
+
+# build the site
+RUN hugo \
+    --verbose
 
 ENTRYPOINT hugo server \
     --verbose \
+    --log=true \
+    --logFile=hugo.log \
+    --verboseLog=true \
+    --renderToDisk=true \
     --ignoreCache \
     --source=/src \
     --destination=/output \

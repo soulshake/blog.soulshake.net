@@ -5,7 +5,7 @@ hugo:
   volumes:
     - ./src/:/src
     - ./output/:/output
-    - ./log/hugo.log:/hugo.log
+    - ./hugo.log:/hugo.log
   restart: always
   expose:
     - "80"
@@ -17,6 +17,10 @@ hugo:
     - hugo
     - server
     - --verbose
+    - --log=true
+    - --logFile=hugo.log
+    - --verboseLog=true
+    - --logFile
     - --ignoreCache
     - --source=/src
     - --destination=/output
