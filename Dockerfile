@@ -11,13 +11,17 @@ RUN apk add --update wget ca-certificates && \
   apk del wget ca-certificates && \
   rm /var/cache/apk/*
 
-COPY ./run.sh /run.sh
-
 COPY ./src /src
+WORKDIR /src
 
-ENV HUGO_BASEURL=blog.soulshake.net
-ENV HUGO_REFRESH_TIME=3600
-ENV HUGO_THEME=blackburn
-
-EXPOSE 1313
-CMD ["/run.sh"]
+ENTRYPOINT hugo server \
+    --verbose \
+    --ignoreCache \
+    --source=/src \
+    --destination=/output \
+    --watch=true \
+    --config=/src/config.toml \
+    --theme=blackburn \
+    --baseUrl=blog.soulshake.net \
+    --bind=0.0.0.0 \
+    --port=80
