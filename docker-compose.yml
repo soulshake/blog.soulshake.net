@@ -21,7 +21,7 @@ hugo:
     - --logFile=hugo.log
     - --verboseLog=true
     - --logFile
-    - --ignoreCache
+    - --ignoreCache=true
     - --source=/src
     - --destination=/output
     - --watch=true

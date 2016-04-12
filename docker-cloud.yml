@@ -2,10 +2,7 @@ hugo:
   image: 'soulshake/blog.soulshake.net:latest'
   deployment_strategy: high_availability
   restart: always
-  #volumes:
-    #- '/tmp/output:/output'
-    #- '/tmp/src:/src'
   ports:
     - '1313:80'
-  entrypoint: "hugo server --verbose --log=true --logFile=hugo.log --verboseLog=true --renderToDisk=true --ignoreCache --source=/src --destination=/output --watch=true --config=/src/config.toml --theme=blackburn --baseUrl=blog.soulshake.net --bind=0.0.0.0 --port=80"
+  entrypoint: "hugo server --verbose --log=true --logFile=hugo.log --verboseLog=true --renderToDisk=true --ignoreCache=true --source=/src --destination=/output --watch=true --config=/src/config.toml --theme=blackburn --baseUrl=blog.soulshake.net --bind=0.0.0.0 --port=80"
   working_dir: /src

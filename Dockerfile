@@ -26,7 +26,7 @@ RUN hugo \
     --logFile=hugo.log \
     --theme=blackburn \
     --baseUrl=blog.soulshake.net \
-    --ignoreCache \
+    --ignoreCache=true \
     --source=/src \
     --destination=/output \
     --config=/src/config.toml
@@ -37,7 +37,7 @@ ENTRYPOINT hugo server \
     --logFile=hugo.log \
     --verboseLog=true \
     --renderToDisk=true \
-    --ignoreCache \
+    --ignoreCache=true \
     --source=/src \
     --destination=/output \
     --watch=true \

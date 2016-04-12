@@ -11,12 +11,17 @@ date = "2016-04-03"
 
 +++
 
+I thought it would be an appropriate use of time to make my resume viewable on the command line.
+
+<!--more-->
+
+
 ## Requirements
 
 - Docker ([how to install](https://docs.docker.com/engine/installation/))
-- Docker Machine ([how to install](https://docs.docker.com/machine/install-machine/))
-- the AWS CLI ([how to install](https://docs.aws.amazon.com/cli/latest/userguide/installing.html))
-- An AWS account
+- A [Github](https://github.com/) account
+- A [Docker Hub](https://hub.docker.com/) account
+- A [Docker Cloud](https://cloud.docker.com/) account
 
 ### Optional
 
@@ -25,117 +30,89 @@ date = "2016-04-03"
 
 ## How to
 
-Clone this repo:
+Fork [this repo](https://github.com/soulshake/cv.soulshake.net.git) and clone it to your machine.
 
-    $ git clone https://github.com/soulshake/cv.soulshake.net.git
-
-
-Export AWS environment variables:
-
-`````bash
-export AWS_SECRET_ACCESS_KEY=your-key-here
-export AWS_ACCESS_KEY_ID=your-key-id-here
-export AWS_DEFAULT_REGION=your-aws-region-here
-`````
-
-By default, `machine` creates new instances in region `us-east-1`.
-
-
-### Use docker-machine to create a host EC2 instance
-
-    $ docker-machine create --driver amazonec2 aws-sandbox
-
-    $ eval $(docker-machine env aws-sandbox)
-
-    $ docker build -t soulshake/cv.soulshake.net .
-
-
-### create a CNAME
-
-#### Get your EC2 instance public DNS name
-
-`````bash
-aws ec2 describe-instances \
-    --query  "Reservations[*].Instances[*].[{CNAME:PublicDnsName,SecurityGroups:SecurityGroups}]" \
-    --output table
-`````
-
-#### And create a CNAME record with your domain provider
-
-`````bash
-gandi record create \
-    --name cv \
-    --type CNAME \
-    --value ec2-52-58-37-111.eu-central-1.compute.amazonaws.com. \
-    soulshake.net
-`````
-
-## add docker-machine to security group
-
-You have two ways to do this:
-
-### On the command line
-
-`````bash
-aws ec2 describe-security-groups \
-    --filters "Name=group-name,Values=docker-machine" \
-    --output table
-
-`````
-
-### On the web interface
-
-Log into the [EC2 console](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#Instances:sort=publicIp) (make sure to select your region at the top right), then:
-
-    - By "Security groups" click the "docker-machine" link
-    - When the security group is selected, select the "Inbound" tab at the bottom
-    - Click the "Edit" button
-    - Click "Add Rule" --> All traffic --> All [protocol] --> Source: Anywhere 0.0.0.0/0 --> Save
-
-## Run the container
-
-`````bash
-docker run -d -ti \
-    --name cv.soulshake.net \
-    --publish-all \
-    -p 80:1337 \
-    -p 1337:1337  \
-    soulshake/cv.soulshake.net
-
-`````
-
-### Behold the magic!
-
-`````bash
-curl -N cv.soulshake.net:32769/\[0-2\]\?auto\&cols=$((COLUMNS))&rows=$((LINES))&terminal=${TERM}
-
-curl -N cv.soulshake.net:32769/\[0-2\]\?cols=$((COLUMNS))&rows=$((ROWS))
-`````
-
-
-# Automated building
-
-If you want to take it to the next level, you can set up hooks.
-
-## Automated Docker hub builds
+### Create an automated build on Docker Hub
 
 Log into your [Docker Hub](https://hub.docker.com) account and create a new Automated Build that will be triggered every time you push to your GitHub or BitBucket repo.
 
-## Automated deployment of the newly built container on your EC2 instance
+In your Docker Hub account, click the "Create" dropdown menu in the upper right and select "Automated build."
 
-Then, using [conduit](https://github.com/ehazlett/conduit), you can set up your EC2 instance so the build triggers a new container to push your changes to production.
+This is fairly straightforward, and you shouldn't need to change anything here. For more info, see [Automated Builds on Docker Hub](https://docs.docker.com/docker-hub/builds/).
 
-That command will look something like this:
+### Launch a new node cluster
 
-`````bash
-docker run -d \
-    --name conduit \
-    -p 8080:8080 \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    ehazlett/conduit \
-    -r soulshake/cv.soulshake.net \
-    -t YOUR_TOKEN_HERE
+In your Docker Cloud dashboard, select the Nodes tab, then click the "Launch a new node cluster" button.
 
-`````
+Create a 1-node cluster with a provider of your choice.
 
+### Create a CNAME
 
+Once the node has been created, you can get its URL from the Nodes tab. Create a CNAME with your domain provider to this address.
+
+### Create a stack on Docker Cloud
+
+In the "Stacks" tab, click the "Create Stack" button.
+
+In my case, I called my stack `cv` (as in resume) and defined a service named `wopr` (as in the name of the software it's running on).
+
+Here's the stackfile:
+
+```
+wopr:
+  image: 'soulshake/cv.soulshake.net:latest'
+  ports:
+    - '1337'
+```
+
+Click the "Create Stack" button at the bottom. You'll be taken to the stack overview page, where you'll see a list of services associated with that stack (in our case, there's only one). Click the service name.
+
+Currently the service has no containers. Before we deploy it, click the "Triggers" tab.
+
+### Create a deployment trigger
+
+Specify a trigger name like `autodeploy`, choose "Redeploy" from the dropdown menu, then click "Add."
+
+A "New trigger created" popup will appear. Copy the URL that appears just under "Make a POST request to the following URL to call the trigger."
+
+Go back to your `cv` repo in your Docker Hub account:
+
+https://hub.docker.com/r/soulshake/cv.soulshake.net/
+
+Select the "Webhooks" tab, and click the `+` to add a new webhook. Pick a name, then paste the URL you copied after creating the trigger for your stack.
+
+You may need to manually trigger the first build, which you can do from the "Build Settings" tab in the Hub repo.
+
+### Create a reverse proxy
+
+Repeat the above steps to create an automated build-and-deploy for [aiguillage](https://github.com/soulshake/aiguillage). This is a fork of @jpetazzo's repo of a super simple reverse proxy using nginx.
+
+The stackfile can be found in `docker-cloud.yml` and looks like this:
+
+```
+aiguillage:
+  image: 'soulshake/aiguillage:latest'
+  autoredeploy: true
+  deployment_strategy: high_availability
+  links:
+    - 'hugo.blog:blog'
+    - 'wopr.cv:cv'
+  ports:
+    - '80:80'
+  tags:
+    - nodecluster-name=soulshake-production
+```
+
+As you can see, this stack serves as a reverse proxy for both my wopr server (cv.soulshake.net) and my blog (you're looking at it).
+
+#### Link the stacks
+
+After you enter the Stackfile, click "Next: Environment variables." Select your wopr service from the "Link services" dropdown, then click the Add button.
+
+Click Save.
+
+### Deploy
+
+Now go back to your Stacks tab, and click the green Start button next to each stack.
+
+At this point, cv.soulshake.net resolves to 1b4cc34f-6039-4038-bce4-99c98bf1ec0b.node.dockerapp.io, and running `curl cv.soulshake.net` should serve up your resume in all its command-line glory. \o/
