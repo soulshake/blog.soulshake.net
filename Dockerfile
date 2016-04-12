@@ -17,10 +17,19 @@ EXPOSE 80
 
 # delete old public files
 RUN rm -rf /src/public
+RUN rm -rf /output
 
 # build the site
 RUN hugo \
-    --verbose
+    --verbose \
+    --log=true \
+    --logFile=hugo.log \
+    --theme=blackburn \
+    --baseUrl=blog.soulshake.net \
+    --ignoreCache \
+    --source=/src \
+    --destination=/output \
+    --config=/src/config.toml
 
 ENTRYPOINT hugo server \
     --verbose \
