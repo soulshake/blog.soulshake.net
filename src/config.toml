@@ -2,7 +2,7 @@ baseUrl = "http://blog.soulshake.net/"
 CanonifyUrls = false
 languageCode = "en-us"
 title = "a flash of light and a distant boom"
-builddrafts = true
+builddrafts = false
 buildfuture = true
 theme = "blackburn"
 
