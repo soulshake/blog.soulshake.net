@@ -8,8 +8,8 @@ hugo:
   restart: always
   expose:
     - "1313"
-  ports:
-    - '1313:80'
+  #ports:
+  #  - '1313:80'
   entrypoint:
     - hugo
     - server
@@ -30,8 +30,9 @@ hugo:
     - --port=80
   working_dir: /src
 
-nginx:
-    image: soulshake/blog.soulshake.net:latest
+nginx-blog:
+    build: ./nginx/
+    #image: soulshake/blog.soulshake.net:latest
     #container_name: nginx-blog
     ports:
       - "80:80"
