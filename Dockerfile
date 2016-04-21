@@ -2,6 +2,7 @@ FROM alpine:latest
 MAINTAINER AJ Bowen <aj@soulshake.net>
 
 ENV HUGO_VERSION=0.15
+
 RUN apk add --update wget ca-certificates && \
   wget --no-check-certificate https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux_amd64.tar.gz && \
   tar xzf hugo_${HUGO_VERSION}_linux_amd64.tar.gz && \
@@ -19,17 +20,23 @@ EXPOSE 80
 RUN rm -rf /src/public
 RUN rm -rf /output
 
+ENV HUGO_THEME=blackburn
+ENV HUGO_BASEURL=blog.soulshake.net
+
 # build the site
 RUN hugo \
     --verbose \
     --log=true \
     --logFile=hugo.log \
-    --theme=blackburn \
-    --baseUrl=blog.soulshake.net \
+    --theme=${HUGO_THEME} \
+    --baseUrl=${HUGO_BASEURL} \
     --ignoreCache=true \
     --source=/src \
     --destination=/output \
     --config=/src/config.toml
+
+# FIXME
+RUN echo "# some markdown for your fancy" > /output/index.md
 
 ENTRYPOINT hugo server \
     --verbose \
@@ -42,7 +49,7 @@ ENTRYPOINT hugo server \
     --destination=/output \
     --watch=true \
     --config=/src/config.toml \
-    --theme=blackburn \
-    --baseUrl=blog.soulshake.net \
+    --theme=${HUGO_THEME} \
+    --baseUrl=${HUGO_BASEURL} \
     --bind=0.0.0.0 \
     --port=80
