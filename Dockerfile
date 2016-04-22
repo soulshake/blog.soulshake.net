@@ -30,7 +30,7 @@ RUN hugo \
     --logFile=hugo.log \
     --theme=${HUGO_THEME} \
     --baseUrl=${HUGO_BASEURL} \
-    --ignoreCache=true \
+    #--ignoreCache=true \
     --source=/src \
     --destination=/output \
     --config=/src/config.toml
@@ -38,13 +38,16 @@ RUN hugo \
 # FIXME
 RUN echo "# some markdown for your fancy" > /output/index.md
 
+#COPY ./make-markdown.sh /make-markdown.sh
+#RUN /make-markdown.sh
+
 ENTRYPOINT hugo server \
     --verbose \
     --log=true \
     --logFile=hugo.log \
     --verboseLog=true \
     --renderToDisk=true \
-    --ignoreCache=true \
+    #--ignoreCache=true \
     --source=/src \
     --destination=/output \
     --watch=true \

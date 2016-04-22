@@ -1,44 +1,39 @@
 hugo:
-  image: soulshake/hugo:latest
-  #build: .
-  volumes:
-    - ./src/:/src
-    - ./output/:/output
-    #- ./hugo.log:/hugo.log
-  restart: always
-  expose:
-    - "1313"
-  #ports:
-  #  - '1313:80'
-  entrypoint:
-    - hugo
-    - server
-    - --verbose
-    - --log=true
-    - --logFile=hugo.log
-    - --verboseLog=true
-    - --logFile
-    #- --renderToDisk=true
-    - --ignoreCache=true
-    - --source=/src
-    - --destination=/output
-    - --watch=true
-    - --config=/src/config.toml
-    - --theme=blackburn
-    - --baseUrl=blog.soulshake.net
-    - --bind=0.0.0.0
-    - --port=80
-  working_dir: /src
+    image: soulshake/hugo:latest
+    volumes:
+        - ./src/:/src
+        - ./output/:/output
+    restart: always
+    expose:
+        - "80"
+    entrypoint:
+        - hugo
+        - server
+        - --verbose
+        - --log=true
+        - --logFile=hugo.log
+        - --verboseLog=true
+        - --logFile
+        #- --renderToDisk=true
+        - --ignoreCache=true
+        - --source=/src
+        - --destination=/output
+        - --watch=true
+        - --config=/src/config.toml
+        - --theme=blackburn
+        - --baseUrl=blog.soulshake.net
+        - --bind=0.0.0.0
+        - --port=80
+    working_dir: /src
 
 nginx-blog:
     build: ./nginx/
     #image: soulshake/blog.soulshake.net:latest
-    #container_name: nginx-blog
     ports:
       - "80:80"
     links:
       - "hugo"
     volumes:
       - ./nginx/nginx.conf/:/etc/nginx/nginx.conf
-      #- ./mime-types:/etc/nginx/mime.types
-      - ./nginx/www:/data/www
+      - ./output/:/data/www
+      - ./src/content/:/data/www-md
