@@ -36,10 +36,8 @@ RUN hugo \
     --config=/src/config.toml
 
 # FIXME
-RUN echo "# some markdown for your fancy" > /output/index.md
-
-#COPY ./make-markdown.sh /make-markdown.sh
-#RUN /make-markdown.sh
+# curl localhost/post/command-line-resume.md
+#RUN echo "# some markdown for your fancy" > /output/index.md
 
 ENTRYPOINT hugo server \
     --verbose \
