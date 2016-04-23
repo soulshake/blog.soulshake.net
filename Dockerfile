@@ -38,6 +38,8 @@ RUN hugo \
 # FIXME
 # curl localhost/post/command-line-resume.md
 #RUN echo "# some markdown for your fancy" > /output/index.md
+COPY ./output/ /data/www
+COPY ./src/content/ /data/www-md
 
 ENTRYPOINT hugo server \
     --verbose \
