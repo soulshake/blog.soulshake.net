@@ -18,7 +18,7 @@ EXPOSE 80
 
 # delete old public files
 RUN rm -rf /src/public
-RUN rm -rf /output
+RUN rm -rf /data/www
 
 ENV HUGO_THEME=blackburn
 ENV HUGO_BASEURL=blog.soulshake.net
@@ -32,14 +32,14 @@ RUN hugo \
     --baseUrl=${HUGO_BASEURL} \
     #--ignoreCache=true \
     --source=/src \
-    --destination=/output \
+    --destination=/data/www \
     --config=/src/config.toml
 
 # FIXME
 # curl localhost/post/command-line-resume.md
 #RUN echo "# some markdown for your fancy" > /output/index.md
-COPY /output/ /data/www
-COPY /src/content/ /data/www-md
+#COPY /output/ /data/www
+COPY ./src/content/ /data/www-md
 VOLUME /data
 
 ENTRYPOINT hugo server \
@@ -50,7 +50,7 @@ ENTRYPOINT hugo server \
     --renderToDisk=true \
     #--ignoreCache=true \
     --source=/src \
-    --destination=/output \
+    --destination=/data/www \
     --watch=true \
     --config=/src/config.toml \
     --theme=${HUGO_THEME} \
