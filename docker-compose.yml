@@ -40,3 +40,5 @@ nginx-blog:
       #- ./src/content:/data/www
       - ./src/content/:/data/www-md
       #- ./src/content:./nginx
+    volumes_from:
+        - "hugo"
