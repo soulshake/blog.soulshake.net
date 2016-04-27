@@ -35,9 +35,6 @@ RUN hugo \
     --destination=/data/www \
     --config=/src/config.toml
 
-# FIXME
-# curl localhost/post/command-line-resume.md
-#RUN echo "# some markdown for your fancy" > /output/index.md
 #COPY /output/ /data/www
 COPY ./src/content/ /data/www-md
 VOLUME /data
