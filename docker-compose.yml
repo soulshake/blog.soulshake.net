@@ -1,6 +1,6 @@
 hugo:
-    #image: soulshake/hugo:latest
-    build: .
+    image: soulshake/hugo:latest
+    #build: .
     volumes:
         - ./src/:/src
         - ./output/:/output
@@ -28,8 +28,8 @@ hugo:
     working_dir: /src
 
 nginx-blog:
-    build: ./nginx/
-    #image: soulshake/blog.soulshake.net:latest
+    #build: ./nginx/
+    image: soulshake/blog.soulshake.net:latest
     ports:
       - "80:80"
     links:
@@ -37,8 +37,6 @@ nginx-blog:
     volumes:
       - ./nginx/nginx.conf/:/etc/nginx/nginx.conf
       - ./output/:/data/www
-      #- ./src/content:/data/www
       - ./src/content/:/data/www-md
-      #- ./src/content:./nginx
     volumes_from:
         - "hugo"
