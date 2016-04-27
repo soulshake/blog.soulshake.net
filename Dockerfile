@@ -37,7 +37,7 @@ RUN hugo \
 
 #COPY /output/ /data/www
 COPY ./src/content/ /data/www-md
-VOLUME /data
+#VOLUME /data
 
 ENTRYPOINT hugo server \
     --verbose \
