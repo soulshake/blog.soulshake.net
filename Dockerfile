@@ -40,9 +40,9 @@ RUN hugo \
 
 
 #COPY /output/ /data/www
+RUN /make-markdown.py > /src/content/index.md
 COPY ./make-markdown.py /make-markdown.py
 COPY ./src/content/ /data/www-md
-RUN /make-markdown.py > /src/content/index.md
 
 ENTRYPOINT hugo server \
     --verbose \
