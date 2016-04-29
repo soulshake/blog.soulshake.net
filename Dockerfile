@@ -3,7 +3,7 @@ MAINTAINER AJ Bowen <aj@soulshake.net>
 
 ENV HUGO_VERSION=0.15
 
-RUN apk add --update wget ca-certificates && \
+RUN apk add --update wget ca-certificates python py-pip && \
   wget --no-check-certificate https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux_amd64.tar.gz && \
   tar xzf hugo_${HUGO_VERSION}_linux_amd64.tar.gz && \
   rm -r hugo_${HUGO_VERSION}_linux_amd64.tar.gz && \
@@ -11,6 +11,9 @@ RUN apk add --update wget ca-certificates && \
   rm -r hugo_${HUGO_VERSION}_linux_amd64 && \
   apk del wget ca-certificates && \
   rm /var/cache/apk/*
+
+RUN pip install click
+RUN pip install arrow
 
 COPY ./src /src
 WORKDIR /src
@@ -37,7 +40,9 @@ RUN hugo \
 
 
 #COPY /output/ /data/www
+COPY ./make-markdown.py /make-markdown.py
 COPY ./src/content/ /data/www-md
+RUN /make-markdown.py > /src/content/index.md
 
 ENTRYPOINT hugo server \
     --verbose \
