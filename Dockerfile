@@ -40,8 +40,8 @@ RUN hugo \
 
 
 #COPY /output/ /data/www
-RUN /make-markdown.py > /src/content/index.md
 COPY ./make-markdown.py /make-markdown.py
+RUN /make-markdown.py > /src/content/index.md
 COPY ./src/content/ /data/www-md
 
 ENTRYPOINT hugo server \
