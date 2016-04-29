@@ -60,7 +60,7 @@ for root, dirs, files in os.walk(target_dir):
         path = "/post/{}".format(post["filename"])
         #post["path"] = path
 
-        real_url = "blog.soulshake.net/{}/{}".format(
+        real_url = "http://blog.soulshake.net/{}/{}".format(
             post["date"].format('YYYY/MM'),
             post["filename"],
         )
