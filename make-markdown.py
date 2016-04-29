@@ -44,17 +44,18 @@ for root, dirs, files in os.walk("src/content/post/"):
 
                 post[key] = value
 
-        url = "blog.soulshake.net/{}".format(post["filename"])
-        if url.endswith(".md"):
-            url = url[:-3]
-        post["url"] = click.style(url, fg='cyan')
+        # blog.soulshake.net/post/command-line-resume.md
+        curl_url = "blog.soulshake.net/post/{}".format(post["filename"])
+        #if url.endswith(".md"):
+            #url = url[:-3]
+        post["curl_url"] = click.style(curl_url, fg='cyan')
 
         if "date" not in post:
             continue
         #post.setdefault("date", arrow.now())
 
         path = "/post/{}".format(post["filename"])
-        post["path"] = path
+        #post["path"] = path
 
         real_url = "blog.soulshake.net/{}/{}".format(
             post["date"].format('YYYY/MM'),
