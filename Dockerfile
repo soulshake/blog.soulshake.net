@@ -17,9 +17,8 @@ WORKDIR /src
 EXPOSE 80
 
 # delete old public files
-#RUN rm -rf /src/public
-#RUN rm -rf /src/public
 RUN rm -rf /data/www
+RUN rm -rf /data/www-md
 
 ENV HUGO_THEME=blackburn
 ENV HUGO_BASEURL=blog.soulshake.net
@@ -31,24 +30,18 @@ RUN hugo \
     --logFile=hugo.log \
     --theme=${HUGO_THEME} \
     --baseUrl=${HUGO_BASEURL} \
-    #--ignoreCache=true \
+    --ignoreCache=true \
     --source=/src \
     --destination=/data/www \
     --config=/src/config.toml
 
-VOLUME /data/www
 
 #COPY /output/ /data/www
 COPY ./src/content/ /data/www-md
-VOLUME /data/www-md
 
 ENTRYPOINT hugo server \
     --verbose \
-    #--log=true \
-    #--logFile=hugo.log \
-    #--verboseLog=true \
     --renderToDisk=true \
-    #--ignoreCache=true \
     --source=/src \
     --destination=/data/www \
     --watch=true \
@@ -58,4 +51,10 @@ ENTRYPOINT hugo server \
     --bind=0.0.0.0 \
     --appendPort=false \
     --port=80
-#hugo server --verbose --renderToDisk=true --source=/data/www --watch=true --config=/src/config.toml --theme=blackburn --baseUrl=blog.soulshake.net --bind=0.0.0.0 --port=80
+#--log=true \
+#--logFile=hugo.log \
+#--verboseLog=true \
+#--ignoreCache=true \
+
+VOLUME /data/www
+VOLUME /data/www-md
