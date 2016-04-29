@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 import os
 import click
 from collections import OrderedDict
@@ -15,11 +16,13 @@ keys = [
     "categories",
 ]
 
-for root, dirs, files in os.walk("src/content/post/"):
+target_dir = sys.argv[1] if len(sys.argv) > 1 else "/src/content/post/"
+
+for root, dirs, files in os.walk(target_dir):
     for filename in files:
         if filename.endswith('.swp'):
             continue
-        f = open("src/content/post/" + filename).read()
+        f = open(target_dir + filename).read()
 
         post = OrderedDict()
         post["filename"] = filename

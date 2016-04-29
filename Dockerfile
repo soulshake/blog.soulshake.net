@@ -39,10 +39,9 @@ RUN hugo \
     --config=/src/config.toml
 
 
-#COPY /output/ /data/www
-COPY ./make-markdown.py /make-markdown.py
-RUN /make-markdown.py > /src/content/index.md
 COPY ./src/content/ /data/www-md
+COPY ./make-markdown.py /make-markdown.py
+RUN /make-markdown.py > /data/www-md/index.md
 
 ENTRYPOINT hugo server \
     --verbose \
