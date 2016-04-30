@@ -1,11 +1,11 @@
 +++
-title = "Serving your resume over curl like a badass: Running a wopr server on an EC2 instance with Docker"
-tags = [ "Docker", "node.js", "command line", "AWS", "EC2" ]
+title = "Serving your resume over curl like a badass"
+tags = [ "Docker", "node.js", "command line", "nginx", "GitHub", "Docker Hub", "Docker Cloud" ]
 categories = [ "Development" ]
 series = [ "Nerdery" ]
 slug = "command-line-resume"
 project_url = "https://github.com/soulshake/cv.soulshake.net"
-summary = "Serving your resume over curl like a badass: Running a wopr server on an EC2 instance with Docker"
+summary = "Running a wopr server with an automated deployment workflow with Docker and GitHub"
 draft = "false"
 date = "2016-04-03"
 

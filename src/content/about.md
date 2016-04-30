@@ -9,4 +9,4 @@ Hello and welcome to my site!
 
 ## All you need to know is right here
 
-I like cheese!
+My name is AJ. Will code for money.
