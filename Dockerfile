@@ -19,10 +19,6 @@ COPY ./src /src
 WORKDIR /src
 EXPOSE 80
 
-# delete old public files
-RUN rm -rf /data/www
-RUN rm -rf /data/www-md
-
 ENV HUGO_THEME=blackburn
 ENV HUGO_BASEURL=blog.soulshake.net
 
@@ -39,9 +35,10 @@ RUN hugo \
     --config=/src/config.toml
 
 
-COPY ./src/content/ /data/www-md
+#COPY ./src/content/ /data/www-md
 COPY ./make-markdown.py /make-markdown.py
-RUN /make-markdown.py > /data/www-md/index.md
+#RUN /make-markdown.py > /data/www-md/index.md
+RUN /make-markdown.py /src/content /data/www-md/
 
 ENTRYPOINT hugo server \
     --verbose \
@@ -60,5 +57,4 @@ ENTRYPOINT hugo server \
 #--verboseLog=true \
 #--ignoreCache=true \
 
-VOLUME /data/www
-VOLUME /data/www-md
+VOLUME /data
