@@ -5,11 +5,11 @@ categories = [ "Development" ]
 series = [ "Python" ]
 slug = "idncheck"
 project_url = "https://github.com/soulshake/idncheck"
-aliases = 
-summary = 
+#aliases = 
+#summary = 
 draft = "true"
-publishdate =
-url = 
+#publishdate =
+#url = 
 
 +++
 
