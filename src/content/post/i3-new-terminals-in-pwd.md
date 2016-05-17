@@ -6,26 +6,31 @@ description = "My simple solution."
 draft = false
 +++
 
-I love i3, and often have multiple split panes open when working on a project. I was tired of opening a new pane and having to `cd` to the directory I was in.
-
-<!--more-->
+I love [i3](https://i3wm.org/), and often have multiple split panes open when working on a project. I got tired of opening a new pane and having to `cd` to the directory I was in.
 
 I came across a lot of proposed solutions, but they were all too complicated or didn't work. Here's my hack.
 
-Note: I use roxterm. I doubt this will work with other terms.
+<!--more-->
 
-### Use bash's `PROMPT_COMMAND` to keep track of your current directory
+Note: I use roxterm. YMMV with other terms.
 
-This will update `/tmp/whereami` every time you hit enter in a shell.
+### Step 1: Use bash's `PROMPT_COMMAND` to keep track of your current directory
 
-In my `~/.bash_profile`:
+Bash provides an environment variable called `PROMPT_COMMAND`. The contents of this variable are executed as a regular Bash command just before Bash displays a prompt. ([Source](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x264.html))
+
+Add this line to your `~/.bash_profile`:
 
     export PROMPT_COMMAND="pwd > /tmp/whereami"
 
+Now, your current working directory will be written to `/tmp/whereami` every time you hit enter in a shell:
 
-### Create a tiny shell script 
+```
+$ cat /tmp/whereami 
+/home/aj/git/blog.soulshake.net/src/content/post
+```
 
-This just opens a new terminal (i3-sensible-terminal evaluates to $TERMINAL which evaluates to `urxvt` in my case) in the directory located in `/tmp/whereami`.
+
+### Step 2: Create a tiny shell script 
 
 In `$HOME/.i3/i3_shell.sh`:
 
@@ -33,11 +38,15 @@ In `$HOME/.i3/i3_shell.sh`:
     WHEREAMI=$(cat /tmp/whereami)
     i3-sensible-terminal --directory="$WHEREAMI"
 
+This just opens a new terminal in the directory located in `/tmp/whereami`.
 
-### i3 bindsym to open a new term
+(`i3-sensible-terminal` evaluates to `$TERMINAL` which evaluates to `urxvt` in my case.)
 
-In my `~/.i3/config`:
+### Step 3: Set up i3 bindsym to i3_shell.sh to open a new term
+
+Add this line to your `~/.i3/config`:
 
     bindsym $mod+Return exec $HOME/.i3/i3_shell.sh
 
+Reload i3 (`Ctrl+meta+R`). Now, new terminals should open in whatever directory you last pressed `enter` in.
 <!--more-->
