@@ -13,7 +13,11 @@ date = "2016-04-03"
 
 I thought it would be an appropriate use of time to make my resume viewable on the command line.
 
+
+{{< figure link="https://asciinema.org/a/30jg2b4gdpd7xhebai45l97qu" src="https://asciinema.org/a/30jg2b4gdpd7xhebai45l97qu.png"  title="$ curl cv.soulshake.net" class="asciicast" >}}
+
 <!--more-->
+
 
 
 ## Requirements
@@ -116,3 +120,5 @@ Click Save.
 Now go back to your Stacks tab, and click the green Start button next to each stack.
 
 At this point, cv.soulshake.net resolves to 1b4cc34f-6039-4038-bce4-99c98bf1ec0b.node.dockerapp.io, and running `curl cv.soulshake.net` should serve up your resume in all its command-line glory. \o/
+
+<script type="text/javascript" src="https://asciinema.org/a/a2bik0tj0pjx4g7ybal1c1wbe.js" id="asciicast-a2bik0tj0pjx4g7ybal1c1wbe" async data-autoplay="true" data-size="small" preload=true loop=true class="asciicast"></script>
