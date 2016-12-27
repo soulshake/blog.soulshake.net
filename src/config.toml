@@ -3,7 +3,7 @@ CanonifyUrls = false
 languageCode = "en-us"
 title = "a flash of light and a distant boom"
 builddrafts = false
-buildfuture = true
+buildfuture = false
 theme = "blackburn"
 
 log = true

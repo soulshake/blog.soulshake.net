@@ -1,5 +1,5 @@
 +++
-date = "2016-02-30"
+date = "2016-02-28"
 title = "Weird zooming after changing tabs in Chromium on Debian with i3"
 author = "AJ Bowen"
 description = "Shortly after switching from OSX, I noticed that I would get unexpected (and extremely annoying) zooming after changing tabs in Chrome."

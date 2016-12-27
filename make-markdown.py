@@ -21,7 +21,6 @@ It should be called with two arguments, as follows:
 
 source_dir = sys.argv[1]
 target_dir = sys.argv[2]
-#target_dir = sys.argv[1] if len(sys.argv) > 1 else "/src/content/"
 
 for root, dirs, files in os.walk(source_dir):
     for filename in files:
@@ -39,12 +38,8 @@ for root, dirs, files in os.walk(source_dir):
         source = os.path.join(root, filename)
         target = os.path.join(root.replace(source_dir, target_dir), filename)
         index_filename = os.path.join(target_dir, 'index.md')
-        #print(root)
-        #print(source_dir)
-        #print(target)
-        #print(uri)
         path = target.replace(target_dir, '')
-        uri = "blog.soulshake.net/{}".format(path)
+        uri = "{}/{}".format(os.environ["HUGO_BASEURL"], path)
         assert os.path.exists(source)
         if not os.path.exists(os.path.dirname(target)):
             os.mkdir(os.path.dirname(target))
@@ -126,7 +121,6 @@ for post in posts:
         index.write("{}: {}\n".format(key, posts[post][key]))
         #print("{}: {}".format(key, posts[post][key]))
     index.write('\n')
-    #print
     
 
 

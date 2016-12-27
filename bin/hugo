@@ -1,0 +1,39 @@
+#!/bin/sh
+
+echo "-------------------------"
+echo "DEVELOPMENT: $DEVELOPMENT"
+echo "HUGO_BASEURL: $HUGO_BASEURL"
+echo "-------------------------"
+
+if [[ "$DEVELOPMENT" == 'true' ]]; then
+    hugo server \
+        --verbose \
+        --log \
+        --verboseLog \
+        --enableGitInfo \
+        --renderToDisk=true \
+        --source=/src \
+        --destination=/data/www \
+        --watch=true \
+        --config=/src/config.toml \
+        --theme=${HUGO_THEME} \
+        --baseUrl=${HUGO_BASEURL} \
+        --bind=0.0.0.0 \
+        --appendPort=false \
+        --port=80
+else
+    hugo server \
+        --verbose \
+        --log \
+        --verboseLog \
+        --renderToDisk=true \
+        --source=/src \
+        --destination=/data/www \
+        --watch=false \
+        --config=/src/config.toml \
+        --theme=${HUGO_THEME} \
+        --baseUrl=${HUGO_BASEURL} \
+        --bind=0.0.0.0 \
+        --appendPort=false \
+        --port=80
+fi
