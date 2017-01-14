@@ -9,6 +9,7 @@ date = "2017-01-12T15:00:00-07:00"
 
 When searching through our [site repo](https://github.com/convox/site), I find myself frequently excluding the same directories, due to my search results being flooded by maddeningly long ugly lines of CSS, javascript and other pointless crap:
 
+<!--more-->
 
 ```
 egrep -ri SomeSearchTerm \
