@@ -51,4 +51,5 @@ Install `xserver-xorg-input-synaptics` and add the following lines to your profi
 
 Ahh, much better.
 
+o/
 <!--more-->
