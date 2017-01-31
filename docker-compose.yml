@@ -1,7 +1,12 @@
-hugo:
+version: "2"
+services:
+  hugo:
     build: .
     ports:
       - "80:80"
+      - "443:80"
+    labels:
+      - convox.port.443.protocol=https
     command: bin/hugo
     environment:
       - DEVELOPMENT
