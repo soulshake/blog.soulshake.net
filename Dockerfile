@@ -40,10 +40,3 @@ COPY ./make-markdown.py /make-markdown.py
 RUN /make-markdown.py /src/content /data/www-md/
 
 COPY ./bin/ /src/bin/
-
-#--log=true \
-#--logFile=hugo.log \
-#--verboseLog=true \
-#--ignoreCache=true \
-
-#VOLUME /data
