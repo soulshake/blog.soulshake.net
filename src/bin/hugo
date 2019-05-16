@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z $HUGO_BASEURL ] && HUGO_BASEURL="https://blog.soulshake.net"
+[ -z $HUGO_BASEURL ] && HUGO_BASEURL="http://blog.soulshake.net"
 
 echo "-------------------------"
 echo "DEVELOPMENT: $DEVELOPMENT"
